@@ -16,7 +16,6 @@ function addPlace(cardData, onDeleteCallBack) {
   deleteButton.addEventListener('click', () => {
   onDeleteCallBack(cardElement);
   })
-
 }
 
 const cardRemove = (cardElement) => {

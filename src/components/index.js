@@ -1,23 +1,26 @@
-import './styles/index.css';
-import { createCard, cardRemove } from './components/card.js';
-import { openPopup } from './components/modal.js';
-import { initialCards } from './components/cards.js';
+import '../styles/index.css';
+import { createCard, cardRemove } from './card.js';
+import { openPopup, closePopup } from './modal.js';
+import { initialCards } from './cards.js';
 
 const cardsContainer = document.querySelector('.places__list');
+
+const closeButtons = document.querySelectorAll('.popup__close');
+const popups = document.querySelectorAll('.popup')
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const editPopup = document.querySelector('.popup_type_edit');
 const profileName = document.querySelector('.profile__title');
 const profileDesc = document.querySelector('.profile__description');
 const editForm = editPopup.querySelector('.popup__form');
-const editFormName = editForm.querySelector('.popup__input_type_name');
-const editFormDesc = editForm.querySelector('.popup__input_type_description');
+const inputNameFormProfile = editForm.querySelector('.popup__input_type_name');
+const inputeDescFormProfile = editForm.querySelector('.popup__input_type_description');
 
 const newCardButton = document.querySelector('.profile__add-button');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const newCardForm = newCardPopup.querySelector('.popup__form');
-const newCardName = newCardForm.querySelector('.popup__input_type_card-name');
-const newCardUrl = newCardForm.querySelector('.popup__input_type_url');
+const inputeNameNewCard = newCardForm.querySelector('.popup__input_type_card-name');
+const inputeUrlNewCard = newCardForm.querySelector('.popup__input_type_url');
 
 const cardOverview = document.querySelector('.popup_type_image');
 const cardOverviewImage = cardOverview.querySelector('.popup__image');
@@ -53,28 +56,46 @@ newCardButton.addEventListener('click', () => {
   openPopup(newCardPopup);
 });
 
+closeButtons.forEach((button) => {
+  button.addEventListener('click', (e) => {
+    const popup = e.target.closest('.popup_is-opened');
+    closePopup(popup);
+  })
+})
+
+popups.forEach((popup) => {
+  popup.addEventListener('click', (e) => {
+    const isClickInsidePopupContent = e.target.closest('.popup__content');
+    if  (!isClickInsidePopupContent && popup.classList.contains('popup_is-opened')) {
+      closePopup(popup)
+    }
+  })
+})
+
 const editFormDefault = () => {
-  editFormName.value = profileName.textContent;
-  editFormDesc.value = profileDesc.textContent;
+  inputNameFormProfile.value = profileName.textContent;
+  inputeDescFormProfile.value = profileDesc.textContent;
 }
 
-const editHandleFormSubmit = (evt) => {
-  evt.preventDefault();
-  profileName.textContent = editFormName.value;
-  profileDesc.textContent = editFormDesc.value;
+const handleEditFormSubmit = (e) => {
+  e.preventDefault();
+  profileName.textContent = inputNameFormProfile.value;
+  profileDesc.textContent = inputeDescFormProfile.value;
+  closePopup(editPopup);
 }
 
-editForm.addEventListener('submit', editHandleFormSubmit);
+editForm.addEventListener('submit', handleEditFormSubmit);
 
-const addNewCard = (evt) => {
-  evt.preventDefault();
+const addNewCard = (e) => {
+  e.preventDefault();
   const cardInfo = {
-    name: newCardName.value,
-    link: newCardUrl.value
+    name: inputeNameNewCard.value,
+    link: inputeUrlNewCard.value
   }
   const newCard = createCard(cardInfo, cardRemove, cardImageListener); 
   addCardToBeginning(newCard);
   newCardForm.reset();
+  closePopup(newCardPopup);
 }
 
 newCardForm.addEventListener('submit', addNewCard);

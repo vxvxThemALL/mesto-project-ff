@@ -35,8 +35,8 @@ const addCardToBeginning = (cardElement) => {
   cardsContainer.insertBefore(cardElement, firstChild);
 }
 
-const cardImageListener = (evt) => {
-  const image = evt.target;
+const cardImageListener = (e) => {
+  const image = e.target;
   cardOverviewImage.src = image.src;
   cardOverviewDesc.textContent = image.alt;
   openPopup(cardOverview);

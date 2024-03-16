@@ -2,6 +2,7 @@ import '../styles/index.css';
 import { createCard, cardRemove } from './card.js';
 import { openPopup, closePopup } from './modal.js';
 import { initialCards } from './cards.js';
+import { enableValidation } from './validation.js'
 
 const cardsContainer = document.querySelector('.places__list');
 
@@ -14,13 +15,13 @@ const profileName = document.querySelector('.profile__title');
 const profileDesc = document.querySelector('.profile__description');
 const editForm = editPopup.querySelector('.popup__form');
 const inputNameFormProfile = editForm.querySelector('.popup__input_type_name');
-const inputeDescFormProfile = editForm.querySelector('.popup__input_type_description');
+const inputDescFormProfile = editForm.querySelector('.popup__input_type_description');
 
 const newCardButton = document.querySelector('.profile__add-button');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const newCardForm = newCardPopup.querySelector('.popup__form');
-const inputeNameNewCard = newCardForm.querySelector('.popup__input_type_card-name');
-const inputeUrlNewCard = newCardForm.querySelector('.popup__input_type_url');
+const inputNameNewCard = newCardForm.querySelector('.popup__input_type_card-name');
+const inputUrlNewCard = newCardForm.querySelector('.popup__input_type_url');
 
 const cardOverview = document.querySelector('.popup_type_image');
 const cardOverviewImage = cardOverview.querySelector('.popup__image');
@@ -74,13 +75,13 @@ popups.forEach((popup) => {
 
 const editFormDefault = () => {
   inputNameFormProfile.value = profileName.textContent;
-  inputeDescFormProfile.value = profileDesc.textContent;
+  inputDescFormProfile.value = profileDesc.textContent;
 }
 
 const handleEditFormSubmit = (e) => {
   e.preventDefault();
   profileName.textContent = inputNameFormProfile.value;
-  profileDesc.textContent = inputeDescFormProfile.value;
+  profileDesc.textContent = inputDescFormProfile.value;
   closePopup(editPopup);
 }
 
@@ -89,8 +90,8 @@ editForm.addEventListener('submit', handleEditFormSubmit);
 const addNewCard = (e) => {
   e.preventDefault();
   const cardInfo = {
-    name: inputeNameNewCard.value,
-    link: inputeUrlNewCard.value
+    name: inputNameNewCard.value,
+    link: inputUrlNewCard.value
   }
   const newCard = createCard(cardInfo, cardRemove, cardImageListener); 
   addCardToBeginning(newCard);
@@ -100,3 +101,4 @@ const addNewCard = (e) => {
 
 newCardForm.addEventListener('submit', addNewCard);
 
+enableValidation();

@@ -5,4 +5,10 @@
   position: absolute;
   top: 143px;
   left: 36px;
+  max-width: 358px;
+}
+
+.popup__input-error:last-of-type {
+  top: 200px;
+  left: 36px;
 }

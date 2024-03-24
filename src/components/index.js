@@ -1,8 +1,10 @@
 import '../styles/index.css';
 import { createCard, cardRemove } from './card.js';
 import { openPopup, closePopup } from './modal.js';
-import { initialCards } from './cards.js';
-import { enableValidation } from './validation.js'
+import { enableValidation, clearValidation } from './validation.js'
+import { getInitialCards, getUser, editProfileInfo, postNewCard } from './api.js';
+
+export let profileId = '';
 
 const cardsContainer = document.querySelector('.places__list');
 
@@ -27,6 +29,15 @@ const cardOverview = document.querySelector('.popup_type_image');
 const cardOverviewImage = cardOverview.querySelector('.popup__image');
 const cardOverviewDesc = cardOverview.querySelector('.popup__caption');
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+}
+
 const addCard = (cardElement) => {
   cardsContainer.appendChild(cardElement);
 }
@@ -43,18 +54,15 @@ const cardImageListener = (e) => {
   openPopup(cardOverview);
 }
 
-initialCards.forEach((cardData) => {
-  const card = createCard(cardData, cardRemove, cardImageListener);
-  addCard(card);
-});
-
 profileEditButton.addEventListener('click', () => {
   openPopup(editPopup);
   editFormDefault();
+  clearValidation(editForm, validationConfig);
 });
 
 newCardButton.addEventListener('click', () => {
   openPopup(newCardPopup);
+  clearValidation(newCardForm, validationConfig);
 });
 
 closeButtons.forEach((button) => {
@@ -78,10 +86,17 @@ const editFormDefault = () => {
   inputDescFormProfile.value = profileDesc.textContent;
 }
 
+const setProfileInfo = (profileData) => {
+  profileName.textContent = profileData.name;
+  profileDesc.textContent = profileData.about;
+  profileId = profileData._id;
+}
+
 const handleEditFormSubmit = (e) => {
   e.preventDefault();
   profileName.textContent = inputNameFormProfile.value;
   profileDesc.textContent = inputDescFormProfile.value;
+  editProfileInfo(inputNameFormProfile.value, inputDescFormProfile.value)
   closePopup(editPopup);
 }
 
@@ -93,19 +108,30 @@ const addNewCard = (e) => {
     name: inputNameNewCard.value,
     link: inputUrlNewCard.value
   }
-  const newCard = createCard(cardInfo, cardRemove, cardImageListener); 
-  addCardToBeginning(newCard);
-  newCardForm.reset();
-  closePopup(newCardPopup);
+  postNewCard(cardInfo.name, cardInfo.link)
+    .then((card) => {
+      const newCard = createCard(card, cardRemove, cardImageListener, profileId); 
+      addCardToBeginning(newCard);
+      newCardForm.reset();
+      closePopup(newCardPopup);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 newCardForm.addEventListener('submit', addNewCard);
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-});
+enableValidation(validationConfig)
+
+Promise.all([getInitialCards(), getUser()])
+  .then(([cards, user]) => {
+    setProfileInfo(user);
+    cards.forEach((cardData) => {
+      const card = createCard(cardData, cardRemove, cardImageListener, profileId);
+      addCard(card);
+    });
+})
+  .catch((err) => {
+    console.log(err);
+  });

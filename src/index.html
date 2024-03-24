@@ -37,9 +37,9 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form class="popup__form" name="edit-profile" novalidate>
-        <input id="name-input" type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40">
+        <input id="name-input" type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" pattern="^[А-Яа-яa-zA-Zё\-\s]+$">
         <span class="name-input-error popup__input-error">Необходимо заполнить данное поле</span>
-        <input id="desc-input" type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200">
+        <input id="desc-input" type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[А-Яа-яa-zA-Zё\-\s]+$">
         <span class="desc-input-error popup__input-error">Необходимо заполнить данное поле</span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
@@ -50,7 +50,7 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place">
-        <input id="place-name-input" type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30">
+        <input id="place-name-input" type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30" pattern="^[А-Яа-яa-zA-Zё\-\s]+$">
         <span class="place-name-input-error popup__input-error">Необходимо заполнить данное поле</span>
         <input id="url-input" type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
         <span class="url-input-error popup__input-error">Необходимо заполнить данное поле</span>
@@ -66,7 +66,6 @@
     </div>
   </div>
 </div>
-
 <template id="card-template">
   <li class="places__item card">
     <img class="card__image" src="" alt="" />
@@ -74,7 +73,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like-interface">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-counter"></span>
+      </div>
     </div>
   </li>
 </template>

@@ -11,7 +11,7 @@
 @import url('./__input-error/popup__input-error.css');
 @import url('./__input-error/_active/popup__input-error_active.css');
 @import url('./__button/_inactive/popup__button_inactive.css');
-
+@import url('./_type_confirm/popup_type_confirm.css');
 .popup {
   font-family: 'Inter', Arial, sans-serif;
   display: none;

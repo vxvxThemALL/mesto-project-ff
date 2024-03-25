@@ -49,12 +49,12 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" name="new-place">
+      <form class="popup__form" name="new-place" novalidate>
         <input id="place-name-input" type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30" pattern="^[А-Яа-яa-zA-Zё\-\s]+$">
         <span class="place-name-input-error popup__input-error">Необходимо заполнить данное поле</span>
         <input id="url-input" type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
         <span class="url-input-error popup__input-error">Необходимо заполнить данное поле</span>
-        <button type="submit" class="button popup__button">Сохранить</button>
+        <button type="submit" class="button popup__button">Создать</button>
       </form>
     </div>
   </div>
@@ -64,6 +64,17 @@
       <img src="" alt="" class="popup__image">
       <p class="popup__caption"></p>
     </div>
+  </div>
+</div>
+<div class="popup popup_type_avatar">
+  <div class="popup__content">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Обновить аватар</h3>
+    <form class="popup__form" name="avatar" novalidate>
+      <input id="avatar-url-input" type="url" name="link" class="popup__input popup__input_type_avatar" placeholder="Ссылка на картинку" required>
+      <span class="avatar-url-input-error popup__input-error">Необходимо заполнить данное поле</span>
+      <button type="submit" class="button popup__button">Сохранить</button>
+    </form>
   </div>
 </div>
 <template id="card-template">

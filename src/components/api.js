@@ -1,4 +1,4 @@
-export { getInitialCards, getUser, editProfileInfo, postNewCard, deleteCard, addLike, removeLike }
+export { getInitialCards, getUser, editProfileInfo, postNewCard, deleteCard, addLike, removeLike, setAvatar }
 
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-9/',
@@ -8,28 +8,26 @@ const config = {
   }
 }
 
+const handleResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
+
+
 const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 const getUser = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 const editProfileInfo = (newName, newDesc) => {
@@ -41,12 +39,7 @@ const editProfileInfo = (newName, newDesc) => {
       about: `${newDesc}`
     })
   },)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 const postNewCard = (name, url) => {
@@ -58,12 +51,7 @@ const postNewCard = (name, url) => {
       link: `${url}`
     })
   },)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleResponse)
 }
 
 const deleteCard = (cardId) => {
@@ -71,12 +59,7 @@ const deleteCard = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+    .then(handleResponse)
 }
 
 const addLike = (cardId) => {
@@ -84,12 +67,7 @@ const addLike = (cardId) => {
     method: 'PUT',
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+    .then(handleResponse)
 }
 
 const removeLike = (cardId) => {
@@ -97,10 +75,16 @@ const removeLike = (cardId) => {
     method: 'DELETE',
     headers: config.headers
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+    .then(handleResponse)
+}
+
+const setAvatar = (url) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar: `${url}`,
+    })
+  },)
+    .then(handleResponse)
 }

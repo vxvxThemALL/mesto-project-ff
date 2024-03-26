@@ -1,9 +1,12 @@
-export const openPopup = (popup) => {
-  popup.classList.add('popup_is-opened', 'popup_is-animated');
+const openPopup = (popup) => {
+  popup.classList.add('popup_is-animated');
+  setTimeout(() => {
+    popup.classList.add('popup_is-opened');
+  }, 1);
   document.addEventListener('keydown', closeEscPopup);
 }
 
-export const closePopup = (popup) => {
+const closePopup = (popup) => {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closeEscPopup)
 }
@@ -15,3 +18,4 @@ const closeEscPopup = (e) => {
   }
 }
 
+export {openPopup, closePopup, closeEscPopup}

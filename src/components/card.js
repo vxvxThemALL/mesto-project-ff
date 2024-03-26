@@ -2,7 +2,7 @@ import { deleteCard, addLike, removeLike } from './api.js';
 
 const cardTemplate = document.getElementById('card-template');
 
-export function createCard(cardData, deleteCardCallback, imageHandler, profileId) {
+function createCard(cardData, imageHandler, profileId) {
   const cardElement = cardTemplate.content.querySelector('.places__item').cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title');
   const cardPic = cardElement.querySelector('.card__image');
@@ -12,7 +12,7 @@ export function createCard(cardData, deleteCardCallback, imageHandler, profileId
   const userId = cardData._id;
   const isLiked = cardData.likes.some((like) => {
     return like._id === profileId
-  });
+});
 
   cardTitle.textContent = cardData.name;
 
@@ -40,7 +40,7 @@ export function createCard(cardData, deleteCardCallback, imageHandler, profileId
   return cardElement;
 }
 
-export const cardRemove = (cardElement, id) => {
+const cardRemove = (cardElement, id) => {
   deleteCard(id)
     .then(() => {
       cardElement.remove();
@@ -71,4 +71,6 @@ const likeHandler = (likeCounter, likeButton, userId) => {
     });
   }
 }
+
+export {createCard}
 

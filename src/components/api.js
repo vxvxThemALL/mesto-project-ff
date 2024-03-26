@@ -1,5 +1,3 @@
-export { getInitialCards, getUser, editProfileInfo, postNewCard, deleteCard, addLike, removeLike, setAvatar }
-
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-9/',
   headers: {
@@ -15,76 +13,74 @@ const handleResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
+const request = (endpoint, options) => {
+  const completeUrl = config.baseUrl + endpoint;
+  return fetch(completeUrl, options).then(handleResponse)
+}
 
 const getInitialCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
+  return request('/cards', {
     headers: config.headers
-  })
-    .then(handleResponse)
+  });
 }
 
 const getUser = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
+  return request('/users/me', {
     headers: config.headers
-  })
-    .then(handleResponse)
+  });
 }
 
 const editProfileInfo = (newName, newDesc) => {
-  return fetch(`${config.baseUrl}/users/me`, {
+  return request('/users/me', {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       name: `${newName}`,
       about: `${newDesc}`
     })
-  },)
-    .then(handleResponse)
+  });
 }
 
 const postNewCard = (name, url) => {
-  return fetch(`${config.baseUrl}/cards`, {
+  return request('/cards', {
     method: 'POST',
     headers: config.headers,
     body: JSON.stringify({
       name: `${name}`,
       link: `${url}`
     })
-  },)
-    .then(handleResponse)
+  });
 }
 
 const deleteCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+  return request(`/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
-  })
-    .then(handleResponse)
+  });
 }
 
 const addLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: config.headers
-  })
-    .then(handleResponse)
+  });
 }
 
 const removeLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
-  })
-    .then(handleResponse)
+  });
 }
 
 const setAvatar = (url) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
+  return request(`/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
     body: JSON.stringify({
       avatar: `${url}`,
     })
-  },)
-    .then(handleResponse)
+  },);
 }
+
+export { getInitialCards, getUser, editProfileInfo, postNewCard, deleteCard, addLike, removeLike, setAvatar }

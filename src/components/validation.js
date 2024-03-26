@@ -1,5 +1,3 @@
-export { enableValidation, clearValidation }
-
 const showInputError = (formElement, inputElement, validationConfig) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
@@ -16,7 +14,7 @@ const hideInputError = (formElement, inputElement, validationConfig) => {
 
 const checkInputValidity = (formElement, inputElement, validationConfig) => {
   if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity("Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.");
+    inputElement.setCustomValidity(inputElement.dataset.error);
   } else {
     inputElement.setCustomValidity("");
   }
@@ -31,7 +29,13 @@ const checkInputValidity = (formElement, inputElement, validationConfig) => {
 const setEventListeners = (formElement, validationConfig) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+
   toggleButtonState(inputList, buttonElement, validationConfig);
+
+  formElement.addEventListener('reset', () => {
+    disableButton(buttonElement, validationConfig)
+  })
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, validationConfig);
@@ -46,13 +50,17 @@ const hasInvalidInput = (inputList) => {
   })
 }
 
+const disableButton = (buttonElement, validationConfig) => {
+  buttonElement.disabled = false;
+  buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+}
+
 const toggleButtonState = (inputList, buttonElement, validationConfig) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.disabled = true;
     buttonElement.classList.add(validationConfig.inactiveButtonClass);
   } else {
-    buttonElement.disabled = false;
-    buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+    disableButton(buttonElement, validationConfig);
   }
 }
 
@@ -75,3 +83,5 @@ const clearValidation = (formElement, validationConfig) => {
 })
   toggleButtonState(inputList, buttonElement, validationConfig);
 }
+
+export { enableValidation, clearValidation }

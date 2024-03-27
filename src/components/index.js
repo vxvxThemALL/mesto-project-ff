@@ -37,11 +37,6 @@ const renderCard = (item, method = "prepend") => {
   cardsContainer[ method ](cardElement)
 }
 
-const addCardToBeginning = (cardElement) => {
-  const firstChild = cardsContainer.firstChild;
-  cardsContainer.insertBefore(cardElement, firstChild);
-}
-
 const cardImageHandler = (e) => {
   const image = e.target;
   cardOverviewImage.src = image.src;
@@ -91,6 +86,7 @@ const setProfileInfo = (profileData) => {
   profileName.textContent = profileData.name;
   profileDesc.textContent = profileData.about;
   profileId = profileData._id;
+  setProfileAvatar(profileData);
 }
 
 const setProfileAvatar = (profileData) => {
@@ -109,9 +105,9 @@ const handleAvatarFormSubmit = (e) => {
 
 const handleEditFormSubmit = (e) => {
   function makeRequest() {
-    return editProfileInfo(inputNameFormProfile.value, inputDescFormProfile.value).then((profileId) => {
-      profileName.textContent = profileId.name;
-      profileDesc.textContent = profileId.about;
+    return editProfileInfo(inputNameFormProfile.value, inputDescFormProfile.value).then((profileData) => {
+      profileName.textContent = profileData.name;
+      profileDesc.textContent = profileData.about;
       closePopup(editPopup);
     });
   }
@@ -125,8 +121,7 @@ const addNewCard = (e) => {
   }
   function makeRequest() {
     return postNewCard(cardInfo.name, cardInfo.link).then((card) => {
-      const newCard = createCard(card, cardImageHandler, profileId); 
-      addCardToBeginning(newCard);
+      renderCard(card);
       closePopup(newCardPopup);
     });
   }

@@ -95,8 +95,8 @@ const setProfileAvatar = (profileData) => {
 
 const handleAvatarFormSubmit = (e) => {
   function makeRequest() {
-    return setAvatar(inputAvatar.value).then(() => {
-      avatarImage.setAttribute('style', `background-image: url('${inputAvatar.value}');`);
+    return setAvatar(inputAvatar.value).then((avatarUrl) => {
+      setProfileAvatar(avatarUrl);
       closePopup(avatarPopup);
     });
   }
